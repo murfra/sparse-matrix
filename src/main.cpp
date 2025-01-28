@@ -8,6 +8,10 @@
  * implementar matrizes esparsas.
  */
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -130,6 +134,12 @@ void comandos() {
 }
 
 int main(int argc, char const *argv[]) {
+    // Configuração de caracteres especiais para Windowns 
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+        std::cout << "Configurado para caracteres especiais e acentos. 😊" << endl;
+    #endif
+    
     vector<SparseMatrix> matrizes;
 
     if (argc > 1) {
@@ -160,11 +170,13 @@ int main(int argc, char const *argv[]) {
         stringstream ss{comando};
         ss >> token;
 
-        cout << "$" << ss.str() << endl;
+        cout << "$" << ss.str() << " ✅" << endl;
 
         // exit
         if (token == "exit") {
+            cout << "Encerrando o programa... ⏳" << endl;
             matrizes.clear();
+            cout << "🔔 Programa encerrado. Até logo!" << endl;
             break;
         }
 
@@ -243,11 +255,11 @@ int main(int argc, char const *argv[]) {
         }
 
         else {
-            cout << "O comando que você inseriu é inválido/ não existe ;( "
+            cout << "O comando que você inseriu é inválido/ não existe ❌ "
                  << endl;
         }
         cout << "> ";
+        
     }
-
     return 0;
 }

@@ -82,7 +82,9 @@ void SparseMatrix::insert(int i, int j, double value) {
     // Teste de verificação de limites para as linhas
     if (i <= 0 || i > linhas || j <= 0 || j > colunas) {
         throw std::out_of_range("Invalid line or column");
-    } else if (value != 0) {
+    } 
+
+    
         Node* aux = m_head->direito;
 
         // move o aux até a coluna j
@@ -91,30 +93,30 @@ void SparseMatrix::insert(int i, int j, double value) {
         while (aux->abaixo->linha != 0 && aux->abaixo->linha != i) {
             aux = aux->abaixo;
         }
-
         // verifica se já existe uma célula na posição i, j
-        if (aux->abaixo->linha == i)
-            aux->abaixo->valor = value;
-        else {
-            Node* temp = new Node(i, j, value);
-            temp->abaixo = aux->abaixo;
-            aux->abaixo = temp;
+        
+            if (aux->abaixo->linha == i && value != 0)
+                aux->abaixo->valor = value;
+            else {
+                Node* temp = new Node(i, j, value);
+                temp->abaixo = aux->abaixo;
+                aux->abaixo = temp;
 
-            aux =
-                m_head
-                    ->abaixo;  // redefine aux para começar da linha 1, coluna 0
-            while (aux->linha != i) {
-                aux = aux->abaixo;  // move o aux até a linha i
+                aux = m_head->abaixo;  // redefine aux para começar da linha 1, coluna 0
+                while (aux->linha != i) {
+                    aux = aux->abaixo;  // move o aux até a linha i
+                }
+
+                // move até o último "direito", até a última coluna, no caso
+                while (aux->direito->coluna != 0) aux = aux->direito;
+
+                temp->direito =
+                    aux->direito;     // faz temp apontar para o começo da linha
+                aux->direito = temp;  // aponta o direito para o temp
             }
+     
 
-            // move até o último "direito", até a última coluna, no caso
-            while (aux->direito->coluna != 0) aux = aux->direito;
-
-            temp->direito =
-                aux->direito;     // faz temp apontar para o começo da linha
-            aux->direito = temp;  // aponta o direito para o temp
-        }
-    }
+    
 }
 
 double SparseMatrix::get(int i, int j) {

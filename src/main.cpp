@@ -108,8 +108,8 @@ void help() {
 }
 
 void comandos() {
-    cout << setfill(' ')
-        << "\nComandos disponíveis:\n"
+    cout
+        << setfill(' ') << "\nComandos disponíveis:\n"
         << setw(2) << "" << "[ajuda | help]" << setw(17) << ""
         << "Exibe esta lista de comandos\n"
         << setw(2) << "" << "[create] <m> <n>" << setw(15) << ""
@@ -134,12 +134,12 @@ void comandos() {
 }
 
 int main(int argc, char const *argv[]) {
-    // Configuração de caracteres especiais para Windowns 
-    #ifdef _WIN32
-        SetConsoleOutputCP(CP_UTF8);
-        std::cout << "Configurado para caracteres especiais e acentos. 😊" << endl;
-    #endif
-    
+// Configuração de caracteres especiais para Windowns
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+    std::cout << "Configurado para caracteres especiais e acentos. 😊" << endl;
+#endif
+
     vector<SparseMatrix> matrizes;
 
     if (argc > 1) {
@@ -255,11 +255,10 @@ int main(int argc, char const *argv[]) {
         }
 
         else {
-            cout << "O comando que você inseriu é inválido/ não existe ❌ "
+            cout << "O comando que você inseriu é inválido/não existe ❌ "
                  << endl;
         }
         cout << "> ";
-        
     }
     return 0;
 }

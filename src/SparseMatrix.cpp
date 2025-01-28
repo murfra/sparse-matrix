@@ -50,12 +50,11 @@ SparseMatrix::~SparseMatrix() {
 }
 
 void SparseMatrix::clear() {
-    // Libera os nós em cada coluna
-    // Começa de (0, 1)
     Node* col = m_head->direito;
-    while (col != m_head) {         // Anda as colunas
-        Node* atual = col->abaixo;  // Primeiro nó na coluna (1,1)
-        while (atual != col) {      // Percorre todos os nós na coluna
+    while (col != m_head) {         
+        Node* atual = col->abaixo;
+        while (atual != col) 
+        {      
             Node* temp = atual;
             atual = atual->abaixo;
             delete temp;  // Libera o nó atual
@@ -68,7 +67,8 @@ void SparseMatrix::clear() {
 
     // Libera os nós sentinelas das linhas
     Node* linha = m_head->abaixo;  // Começa na primeira linha (1, 0)
-    while (linha != m_head) {      // Anda as linhas
+    while (linha != m_head) 
+    {      // Anda as linhas
         Node* temp = linha;
         linha = linha->abaixo;
         delete temp;  // Libera o nó sentinela da linha
@@ -82,39 +82,54 @@ void SparseMatrix::insert(int i, int j, double value) {
     // Teste de verificação de limites para as linhas
     if (i <= 0 || i > linhas || j <= 0 || j > colunas) {
         throw std::out_of_range("Invalid line or column");
-    } else if (value != 0) {
-        Node* aux = m_head->direito;
+    } 
 
-        // move o aux até a coluna j
-        while (aux->coluna != j) { aux = aux->direito; }
-        // move o aux até a linha i ou até quse seja igual a 0
-        while (aux->abaixo->linha != 0 && aux->abaixo->linha != i) {
-            aux = aux->abaixo;
-        }
+    Node* aux = m_head->direito;
 
-        // verifica se já existe uma célula na posição i, j
-        if (aux->abaixo->linha == i)
-            aux->abaixo->valor = value;
-        else {
-            Node* temp = new Node(i, j, value);
-            temp->abaixo = aux->abaixo;
-            aux->abaixo = temp;
-
-            aux =
-                m_head
-                    ->abaixo;  // redefine aux para começar da linha 1, coluna 0
-            while (aux->linha != i) {
-                aux = aux->abaixo;  // move o aux até a linha i
-            }
-
-            // move até o último "direito", até a última coluna, no caso
-            while (aux->direito->coluna != 0) aux = aux->direito;
-
-            temp->direito =
-                aux->direito;     // faz temp apontar para o começo da linha
-            aux->direito = temp;  // aponta o direito para o temp
-        }
+    //move o aux até a coluna j
+    while (aux->coluna != j)
+    {
+        aux = aux->direito;
     }
+
+    // move o aux até a linha i ou até quse seja igual a 0
+    while (aux->abaixo->linha != 0 && aux->abaixo->linha < i) {
+        aux = aux->abaixo;
+    }
+
+    // verifica se já existe uma célula na posição i, j
+        
+    if (aux->abaixo->linha == i)
+    { 
+        if(value != 0) {
+            aux->abaixo->valor = value;
+        }
+        else{
+            Node* toErase = aux->abaixo;
+            aux->abaixo = toErase->abaixo;
+            delete toErase;
+        }
+        return;
+    } 
+
+    if(value == 0) return;
+
+    // Cria e insere o novo nó na coluna
+    Node* temp = new Node(i, j, value);
+    temp->abaixo = aux->abaixo;
+    aux->abaixo = temp;
+
+    aux = m_head->abaixo;
+    while (aux->linha != i) {
+        aux = aux->abaixo;
+    }
+    while (aux->direito->coluna != 0 && aux->direito->coluna < j) {
+        aux = aux->direito;
+    }
+
+    temp->direito = aux->direito;
+    aux->direito = temp;
+    
 }
 
 double SparseMatrix::get(int i, int j) {
@@ -144,7 +159,8 @@ void SparseMatrix::print() {
         Node* temp = aux->direito;
 
         std::cout << "[ ";
-        for (int j = 1; j <= colunas; j++) {
+        for (int j = 1; j <= colunas; j++) 
+        {
             if (temp->coluna == j)
                 std::cout << temp->valor << " ";
             else

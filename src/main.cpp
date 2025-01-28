@@ -8,6 +8,10 @@
  * implementar matrizes esparsas.
  */
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -104,9 +108,9 @@ void help() {
 }
 
 void comandos() {
-    cout
+    cout << setfill(' ')
         << "\nComandos disponíveis:\n"
-        << setw(2) << "" << "[ajuda | help]" << setw(13) << ""
+        << setw(2) << "" << "[ajuda | help]" << setw(17) << ""
         << "Exibe esta lista de comandos\n"
         << setw(2) << "" << "[create] <m> <n>" << setw(15) << ""
         << "Cria uma matriz esparsa com m linhas e n colunas\n"
@@ -130,6 +134,12 @@ void comandos() {
 }
 
 int main(int argc, char const *argv[]) {
+    // Configuração de caracteres especiais para Windowns 
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+        std::cout << "Configurado para caracteres especiais e acentos. 😊" << endl;
+    #endif
+    
     vector<SparseMatrix> matrizes;
 
     if (argc > 1) {
@@ -149,10 +159,10 @@ int main(int argc, char const *argv[]) {
                 readSparseMatrix(matrizes[0], argv[2]);
                 cout << "Arquivo carregado!" << endl;
             }
-            cout << "> ";
         }
     } else
         displayMenu();
+    cout << "> ";
 
     while (true) {
         string comando, token;
@@ -160,11 +170,13 @@ int main(int argc, char const *argv[]) {
         stringstream ss{comando};
         ss >> token;
 
-        cout << "$" << ss.str() << endl;
+        cout << "$" << ss.str() << " ✅" << endl;
 
         // exit
         if (token == "exit") {
+            cout << "Encerrando o programa... ⏳" << endl;
             matrizes.clear();
+            cout << "🔔 Programa encerrado. Até logo!" << endl;
             break;
         }
 
@@ -243,11 +255,11 @@ int main(int argc, char const *argv[]) {
         }
 
         else {
-            cout << "O comando que você inseriu é inválido/ não existe ;( "
+            cout << "O comando que você inseriu é inválido/ não existe ❌ "
                  << endl;
         }
         cout << "> ";
+        
     }
-
     return 0;
 }

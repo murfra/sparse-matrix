@@ -144,7 +144,6 @@ double SparseMatrix::get(int i, int j) {
 
 void SparseMatrix::print() {
     Node* aux = m_head->abaixo;
-
     for (int i = 1; i <= linhas; i++) {
         Node* temp = aux->direito;
 

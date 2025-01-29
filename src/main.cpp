@@ -4,7 +4,7 @@
  * - Murilo Fragoso (Matrícula: 570701)
  *
  * Descrição:
- * Esse código aplica conceitos de listas simplesmente encadeadas para
+ * Esse código aplica conceitos de lista simplesmente encadeada para
  * implementar matrizes esparsas.
  */
 
@@ -99,38 +99,36 @@ void displayMenu() {
 void help() {
     cout << "uso:\n"
          << setw(2) << ""
-         << "./sparse_matrix [-h | --help] [-f | --file=ARQUIVO]\n";
+         << "./sparse_matrix [-h | --help] [-f | --file]\n";
 
     cout << "\n" << setw(2) << "" << "-h, --help" << setw(20) << "";
     cout << "Mostra opções de ajuda\n";
-    cout << setw(2) << "" << "-f, --file=ARQUIVO" << setw(12) << "";
-    cout << "Lê um ARQUIVO que especifica uma matriz esparsa" << endl;
+    cout << setw(2) << "" << "-f, --file <ARQUIVO>" << setw(10) << "";
+    cout << "Lê um ARQUIVO que especifica uma matriz" << endl;
 }
 
 void comandos() {
-    cout
-        << setfill(' ') << "\nComandos disponíveis:\n"
-        << setw(2) << "" << "[ajuda | help]" << setw(17) << ""
-        << "Exibe esta lista de comandos\n"
-        << setw(2) << "" << "[create] <m> <n>" << setw(15) << ""
-        << "Cria uma matriz esparsa com m linhas e n colunas\n"
-        << setw(2) << "" << "[size] <i>" << setw(21) << ""
-        << "Exibe o tamanho da matriz de índice i\n"
-        << setw(2) << "" << "[insert] <i> <m> <n> <v>" << setw(7) << ""
-        << "Insere o valor v na célula (m, n) da matriz de índice i\n"
-        << setw(2) << "" << "[get] <i> <m> <n>" << setw(14) << ""
-        << "Obtém o valor na célula (m, n) da matriz de índice i\n"
-        << setw(2) << "" << "[print] <i>" << setw(20) << ""
-        << "Exibe a matriz de índice i\n"
-        << setw(2) << "" << "[sum] <a> <b>" << setw(18) << ""
-        << "Soma as matrizes de índices a e b e armazena o resultado no vetor\n"
-        << setw(2) << "" << "[multiply] <a> <b>" << setw(13) << ""
-        << "Multiplica as matrizes de índices a e b e armazena o resultado no "
-           "vetor\n"
-        << setw(2) << "" << "[show]" << setw(25) << ""
-        << "Exibe todas as matrizes armazenadas no vetor\n"
-        << setw(2) << "" << "[exit]" << setw(25) << ""
-        << "Sai do programa e libera a mémoria\n";
+    cout << setfill(' ') << "\nComandos disponíveis:\n"
+         << setw(2) << "" << "[ajuda | help]" << setw(17) << ""
+         << "Exibe esta lista de comandos\n"
+         << setw(2) << "" << "[create] <m> <n>" << setw(15) << ""
+         << "Cria uma matriz esparsa com m linhas e n colunas\n"
+         << setw(2) << "" << "[size] <i>" << setw(21) << ""
+         << "Exibe o tamanho da matriz de índice i\n"
+         << setw(2) << "" << "[insert] <i> <m> <n> <v>" << setw(7) << ""
+         << "Insere o valor v na célula (m, n) da matriz de índice i\n"
+         << setw(2) << "" << "[get] <i> <m> <n>" << setw(14) << ""
+         << "Obtém o valor na célula (m, n) da matriz de índice i\n"
+         << setw(2) << "" << "[print] <i>" << setw(20) << ""
+         << "Exibe a matriz de índice i\n"
+         << setw(2) << "" << "[sum] <a> <b>" << setw(18) << ""
+         << "Soma as matrizes de índices a e b e armazena o resultado\n"
+         << setw(2) << "" << "[multiply] <a> <b>" << setw(13) << ""
+         << "Multiplica as matrizes de índices a e b e armazena o resultado\n"
+         << setw(2) << "" << "[show]" << setw(25) << ""
+         << "Exibe todas as matrizes armazenadas\n"
+         << setw(2) << "" << "[exit]" << setw(25) << ""
+         << "Sai do programa e libera a mémoria\n";
 }
 
 int main(int argc, char const *argv[]) {
@@ -162,9 +160,10 @@ int main(int argc, char const *argv[]) {
         }
     } else
         displayMenu();
-    cout << "> ";
 
     while (true) {
+        cout << "> ";
+
         string comando, token;
         getline(cin, comando);
         stringstream ss{comando};
@@ -258,7 +257,6 @@ int main(int argc, char const *argv[]) {
             cout << "O comando que você inseriu é inválido/não existe ❌ "
                  << endl;
         }
-        cout << "> ";
     }
     return 0;
 }

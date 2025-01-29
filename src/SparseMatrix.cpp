@@ -4,13 +4,12 @@
 #include <stdexcept>
 
 void SparseMatrix::initializeMatrix(int m, int n) {
-    // Inicilizando nós sentinela para cada linha m e coluna n
     for (int i = m + n; i >= 1; i--) {
-        if (i > n) {  // inicilizando as colunas (0, n)
+        if (i > n) {
             Node* aux = new Node(0, i - n);
             aux->direito = m_head->direito;
             m_head->direito = aux;
-        } else {  // inicilizando as linhas (m, 0);
+        } else {
             Node* aux = new Node(i, 0);
             aux->abaixo = m_head->abaixo;
             m_head->abaixo = aux;

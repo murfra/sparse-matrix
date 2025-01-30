@@ -8,10 +8,6 @@
  * implementar matrizes esparsas.
  */
 
-#ifdef _WIN32
-#include <Windows.h>
-#endif
-
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -20,6 +16,10 @@
 #include <string>
 #include <vector>
 
+#ifdef _WIN32
+#include <Windows.h>
+#endif
+
 #include "../include/SparseMatrix.h"
 
 using namespace std;
@@ -27,8 +27,8 @@ using namespace std;
 /**
  * @brief Lê uma matriz esparsa de um arquivo e a armazena em uma SparseMatrix.
  *
- * Esta função abre um arquivo, lê as dimensões da matriz e seus valores não nulos,
- * e insere esses valores na matriz esparsa fornecida.
+ * Esta função abre um arquivo, lê as dimensões da matriz e seus valores
+ * não nulos, e insere esses valores na matriz esparsa fornecida.
  *
  * @param m Referência para a SparseMatrix que será preenchida.
  * @param filename Nome do arquivo contendo os dados da matriz.
@@ -45,16 +45,19 @@ void readSparseMatrix(SparseMatrix &m, string filename) {
     double v;
 
     file >> lin >> col;
+
     m = SparseMatrix(lin, col);
 
     while (file >> i >> j >> v) m.insert(i, j, v);
+
+    cout << "Arquivo carregado!" << endl;
 }
 
 /**
  * @brief Realiza a soma de duas matrizes esparsas.
  *
- * Esta função soma duas matrizes esparsas A e B, desde que tenham as mesmas dimensões.
- * O resultado é armazenado em uma nova matriz esparsa C.
+ * Esta função soma duas matrizes esparsas A e B, desde que tenham as
+ * mesmas dimensões. O resultado é armazenado em uma nova matriz esparsa C.
  *
  * @param A Primeira matriz.
  * @param B Segunda matriz.
@@ -81,8 +84,9 @@ SparseMatrix *sum(SparseMatrix &A, SparseMatrix &B) {
 /**
  * @brief Realiza a multiplicação de duas matrizes esparsas.
  *
- * Esta função multiplica duas matrizes esparsas A e B, desde que o número de colunas
- * de A seja igual ao número de linhas de B. O resultado é armazenado em uma nova matriz esparsa C.
+ * Esta função multiplica duas matrizes esparsas A e B, desde que o número
+ * de colunas de A seja igual ao número de linhas de B. O resultado é
+ * armazenado em uma nova matriz esparsa C.
  *
  * @param A Primeira matriz.
  * @param B Segunda matriz.
@@ -117,7 +121,8 @@ SparseMatrix *multiply(SparseMatrix &A, SparseMatrix &B) {
 /**
  * @brief Exibe o menu inicial do programa.
  *
- * Esta função exibe uma mensagem de boas-vindas e instruções básicas para o usuário.
+ * Esta função exibe uma mensagem de boas-vindas e instruções básicas para
+ * o usuário.
  */
 void displayMenu() {
     cout << "Olá, seja bem-vindo(a)!\n";
@@ -128,8 +133,8 @@ void displayMenu() {
 /**
  * @brief Exibe a ajuda do programa.
  *
- * Esta função exibe as opções de uso do programa, incluindo como ler um arquivo
- * e outras funcionalidades disponíveis.
+ * Esta função exibe as opções de uso do programa, como ler um arquivo e
+ * ajuda.
  */
 void help() {
     cout << "uso:\n"
@@ -145,8 +150,9 @@ void help() {
 /**
  * @brief Exibe a lista de comandos disponíveis no programa.
  *
- * Esta função lista todos os comandos que o usuário pode utilizar para interagir
- * com o programa, como criar matrizes, inserir valores, somar, multiplicar, etc.
+ * Esta função lista todos os comandos que o usuário pode utilizar para
+ * interagir com o programa, como criar matrizes, inserir valores, somar,
+ * multiplicar, etc.
  */
 void comandos() {
     cout << setfill(' ') << "\nComandos disponíveis:\n"
@@ -175,15 +181,16 @@ void comandos() {
 /**
  * @brief Função principal do programa.
  *
- * Esta função gerencia a execução do programa, incluindo a leitura de argumentos
- * da linha de comando, a interação com o usuário e a execução dos comandos.
+ * Esta função gerencia a execução do programa, incluindo a leitura de
+ * argumentos da linha de comando, a interação com o usuário e a execução
+ * dos comandos.
  *
  * @param argc Número de argumentos da linha de comando.
  * @param argv Vetor de argumentos da linha de comando.
  * @return 0 se o programa for executado com sucesso.
  */
 int main(int argc, char const *argv[]) {
-    // Configuração de caracteres especiais para Windowns
+    // Configuração de caracteres especiais para Windows
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     std::cout << "Configurado para caracteres especiais e acentos. 😊" << endl;
@@ -192,21 +199,24 @@ int main(int argc, char const *argv[]) {
     vector<SparseMatrix> matrizes;
 
     if (argc > 1) {
-        string arg1 = string(argv[1]);
+        string arg1 = argv[1];
+
         if (arg1 == "-h" || arg1 == "--help") {
             help();
             return 0;
         } else {
             displayMenu();
-            // leitura do arquivo
+
+            // Leitura do arquivo
             if (arg1.find("--file=") == 0) {
                 matrizes.push_back(SparseMatrix());
                 readSparseMatrix(matrizes[0], arg1.substr(7));
-                cout << "Arquivo carregado!" << endl;
             } else if (arg1 == "-f" || arg1 == "--file") {
+                cout << "problema" << endl;
                 matrizes.push_back(SparseMatrix());
-                readSparseMatrix(matrizes[0], argv[2]);
-                cout << "Arquivo carregado!" << endl;
+                if (argc > 2)
+                    readSparseMatrix(matrizes[0], argv[2]);
+                else { throw runtime_error("Arquivo não fornecido."); }
             }
         }
     } else

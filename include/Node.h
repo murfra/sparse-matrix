@@ -5,11 +5,11 @@
  * @brief Estrutura do nó para as matrizes esparsas.
  */
 struct Node {
-    int linha;     ///< Índice da linha do nó.
-    int coluna;    ///< Índice da coluna do nó.
-    double valor;  ///< Valor armazenado no nó.
-    Node* abaixo;  ///< Ponteiro para o nó abaixo na matriz.
-    Node* direito; ///< Ponteiro para o nó à direita na matriz.
+    int linha;      ///< Índice da linha do nó.
+    int coluna;     ///< Índice da coluna do nó.
+    double valor;   ///< Valor armazenado no nó.
+    Node* abaixo;   ///< Ponteiro para o nó abaixo na matriz.
+    Node* direito;  ///< Ponteiro para o nó à direita na matriz.
 
     /**
      * @brief Construtor padrão do nó.

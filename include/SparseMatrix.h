@@ -11,82 +11,135 @@
  */
 class SparseMatrix {
    private:
-    Node* m_head = new Node(0, 0);  // Inicializa o nó "sentinela" sem valor.
-    int linhas = 0;                 // Inicializa linhas com o valor 0.
-    int colunas = 0;                // Inicializa colunas com o valor 0.
+    Node* m_head = new Node(0, 0);  //> Inicializa um nó sentinela sem valor.
+    int linhas = 0;                 //> Inicializa linhas com o valor 0.
+    int colunas = 0;                //> Inicializa colunas com o valor 0.
 
     /**
-     * @brief Inicializa a matriz.
+     * @brief Inicializa a matriz esparsa com nós sentinelas para linhas e
+     * colunas.
      *
-     * Esta função aloca memória para um nó sentinela em cada coluna n
-     * e cada linha m, faz cada nó adicionado apontar para o nó anterior
-     * e o nó m_head apontar para o último adicionado.
+     * Esta função cria nós sentinelas para cada linha e coluna da matriz,
+     * conectando-os de forma circular. Os nós sentinelas serão usados para
+     * facilitar a navegação e inserção de elementos na matriz esparsa.
      *
-     * @param m Quantidade de linhas da matriz esparsa.
-     * @param n Quantidade de colunas da matriz esparsa.
+     * @param m Número de linhas da matriz.
+     * @param n Número de colunas da matriz.
      */
     void initializeMatrix(int m, int n);
+
+    /**
+     * @brief Limpa a matriz, liberando a memória de todos os nós.
+     *
+     * Percorre todas as linhas e colunas da matriz, deletando os nós com
+     * valores e os nós sentinelas.
+     */
     void clear();
 
    public:
     /**
-     * @brief Construtor default da classe SparseMatrix.
+     * @brief Construtor padrão da classe SparseMatrix.
+     *
+     * Este construtor inicializa a classe com valores padrão.
      */
     SparseMatrix() = default;
 
     /**
-    * @brief Construtor da classe SparseMatrix.
-    * 
-    * Essa função verifica se os valores de linha e coluna (m e n
-    * respectivamente) são válidos e inicializa (aloca espaço na memória)
-    * os nós sentinelas de cada linha e coluna.
-    *
-    * @param m Quantidade de linhas para a matriz esparsa.
-    * @param n Quantidade de colunas para a matriz esparsa.
-    */
+     * @brief Construtor da classe SparseMatrix que recebe parâmetros.
+     *
+     * Inicializa a matriz com o número de linhas e colunas especificado.
+     * Lança uma exceção se os valores de linhas ou colunas forem inválidos.
+     *
+     * @param m Número de linhas da matriz.
+     * @param n Número de colunas da matriz.
+     * @throws std::out_of_range Se m ou n forem menores ou iguais a zero.
+     */
     SparseMatrix(int m, int n);
 
+    /**
+     * @brief Construtor de cópia da classe SparseMatrix.
+     *
+     * Cria uma nova matriz esparsa como cópia de outra matriz.
+     * A nova matriz terá os mesmos valores não nulos da matriz original.
+     *
+     * @param matrix Matriz esparsa a ser copiada.
+     */
     SparseMatrix(const SparseMatrix& matrix);
 
     /**
-    * @brief Destrutor da classe SparseMatrix.
-    *
-    * Essa função apaga (desaloca a memória) os nós de cada linha e coluna
-    * (m e n respectivamente) e consequentemente a matriz.
-    */
+     * @brief Destrutor da classe SparseMatrix.
+     *
+     * Libera toda a memória alocada para os nós da matriz, incluindo os
+     * nós sentinelas.
+     */
     ~SparseMatrix();
 
-   /**
-    * @brief Função de inserção.
-    *
-    * @param i Linha da matriz.
-    * @param j Coluna da matriz.
-    * @param value Valor a ser adicionado.
-    */
+    /**
+     * @brief Insere um valor na matriz esparsa.
+     *
+     * Insere um valor na posição (i, j) da matriz. Se o valor for zero,
+     * o nó correspondente é removido da matriz. Lança uma exceção se
+     * os índices forem inválidos.
+     *
+     * @param i Índice da linha (1-based).
+     * @param j Índice da coluna (1-based).
+     * @param value Valor a ser inserido.
+     * @throws std::out_of_range Se i ou j forem inválidos.
+     */
     void insert(int i, int j, double value);
 
-   /**
-    * @brief Imprime a matriz no terminal.
-    */
-    void print();
-
-   /**
-    * @brief ?
-    */
+    /**
+     * @brief Obtém o valor de uma posição na matriz.
+     *
+     * Retorna o valor armazenado na posição (i, j) da matriz.
+     * Se a posição não contiver um valor, retorna zero.
+     * Lança uma exceção se os índices forem inválidos.
+     *
+     * @param i Índice da linha (1-based).
+     * @param j Índice da coluna (1-based).
+     * @return Valor na posição (i, j) ou zero se a posição estiver vazia.
+     * @throws std::out_of_range Se i ou j forem inválidos.
+     */
     double get(int i, int j);
 
+    /**
+     * @brief Retorna o número de linhas da matriz.
+     *
+     * @return Número de linhas da matriz.
+     */
     int getLines() const;
+
+    /**
+     * @brief Retorna o número de colunas da matriz.
+     *
+     * @return Número de colunas da matriz.
+     */
     int getCols() const;
+
+    /**
+     * @brief Retorna o tamanho total da matriz (linhas * colunas).
+     *
+     * @return Tamanho total da matriz.
+     */
     int size() const;
 
     /**
-     * @brief Sobrecarga do operador de atribuição (=).
+     * @brief Imprime a matriz no terminal.
      *
-     * Este operador permite atribuir uma matriz esparsa a outra, copiando      * os dados da matriz recebida.
+     * Percorre a matriz e imprime seus valores no formato de matriz
+     * bidimensional. Valores não presentes na matriz esparsa são impressos como
+     * zero.
+     */
+    void print();
+
+    /**
+     * @brief Sobrecarga do operador de atribuição.
      *
-     * @param matrix Referência constante para uma matriz esparsa a ser
-     * copiada.
-     * @return Referência para a instância atual da matriz esparsa.
+     * Atribui os valores de outra matriz esparsa à atual.
+     * Libera a memória da matriz atual antes de copiar os valores.
+     *
+     * @param matrix Matriz esparsa a ser copiada.
+     * @return Referência para a instância atual.
      */
     SparseMatrix& operator=(const SparseMatrix& matrix);
 };

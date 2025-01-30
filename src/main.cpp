@@ -212,7 +212,6 @@ int main(int argc, char const *argv[]) {
                 matrizes.push_back(SparseMatrix());
                 readSparseMatrix(matrizes[0], arg1.substr(7));
             } else if (arg1 == "-f" || arg1 == "--file") {
-                cout << "problema" << endl;
                 matrizes.push_back(SparseMatrix());
                 if (argc > 2)
                     readSparseMatrix(matrizes[0], argv[2]);

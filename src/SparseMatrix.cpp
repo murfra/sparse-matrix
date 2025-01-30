@@ -49,8 +49,9 @@ SparseMatrix::SparseMatrix(int m, int n) : linhas(m), colunas(n) {
 }
 
 SparseMatrix::SparseMatrix(const SparseMatrix& matrix)
-    : SparseMatrix(matrix.linhas, matrix.colunas) {
+    : linhas(matrix.linhas), colunas(matrix.colunas) {
     if (this != &matrix) {
+        initializeMatrix(linhas, colunas);
         Node* auxL = matrix.m_head->abaixo;
         while (auxL != matrix.m_head) {
             Node* auxC = auxL->direito;

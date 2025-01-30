@@ -314,7 +314,7 @@ int main(int argc, char const *argv[]) {
         }
 
         else {
-            cout << "O comando que você inseriu é inválido/não existe ❌ "
+            cout << "O comando que você inseriu é inválido/não existe ❌"
                  << endl;
         }
     }

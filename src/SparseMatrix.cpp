@@ -1,6 +1,7 @@
 #include "../include/SparseMatrix.h"
 
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
 
 void SparseMatrix::initializeMatrix(int m, int n) {
@@ -149,21 +150,22 @@ int SparseMatrix::size() const {
 
 void SparseMatrix::print() {
     Node* aux = m_head->abaixo;
+    std::ostringstream buff;
+
     for (int i = 1; i <= linhas; i++) {
         Node* temp = aux->direito;
-
-        std::cout << "[ ";
+        buff << "[ ";
         for (int j = 1; j <= colunas; j++) {
-            if (temp->coluna == j)
-                std::cout << temp->valor << " ";
-            else
-                std::cout << 0 << " ";
+            if (temp->coluna == j) buff << temp->valor << ' ';
+            else buff << "0 ";
 
             if (j == temp->coluna) temp = temp->direito;
         }
         aux = aux->abaixo;
-        std::cout << ']' << std::endl;
+        buff << "]\n";
     }
+
+    std::cout << buff.str();
 }
 
 SparseMatrix& SparseMatrix::operator=(const SparseMatrix& matrix) {

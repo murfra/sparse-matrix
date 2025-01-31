@@ -37,8 +37,8 @@ O projeto está organizado da seguinte forma:
 │   └── SparseMatrix.cpp  # Implementação da classe SparseMatrix
 │
 ├── /tests                # Arquivos de teste para a matriz esparsa
-│   ├── matrix3x3.txt     # Exemplo de matriz 3x3
-│   └── matrix4x4.txt     # Exemplo de matriz 4x4
+│   ├── matrix4x4.txt     # Exemplo de matriz 4x4
+│   └── matrix50x50.txt   # Exemplo de matriz 50x50
 │
 ├── clang-format.txt      # Configuração de formatação de código (clang-format)
 ├── .gitignore            # Arquivo para ignorar arquivos no Git

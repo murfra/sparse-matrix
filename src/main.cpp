@@ -160,12 +160,14 @@ void comandos() {
          << "Exibe esta lista de comandos\n"
          << setw(2) << "" << "[create] <m> <n>" << setw(15) << ""
          << "Cria uma matriz esparsa com m linhas e n colunas\n"
+         << setw(2) << "" << "[open] <file> <...>" << setw(12) << ""
+         << "Lê o(s) arquivo(s) especificado(s)\n"
          << setw(2) << "" << "[size] <i>" << setw(21) << ""
          << "Exibe o tamanho da matriz de índice i\n"
          << setw(2) << "" << "[insert] <i> <m> <n> <v>" << setw(7) << ""
          << "Insere o valor v na célula (m, n) da matriz de índice i\n"
          << setw(2) << "" << "[delete] <i> " << setw(18) << ""
-         << "Deleta o índice i no vetor de matrizes\n"
+         << "Deleta a matriz de índice i\n"
          << setw(2) << "" << "[get] <i> <m> <n>" << setw(14) << ""
          << "Obtém o valor na célula (m, n) da matriz de índice i\n"
          << setw(2) << "" << "[print] <i>" << setw(20) << ""
@@ -208,16 +210,15 @@ int main(int argc, char const *argv[]) {
             return 0;
         } else {
             displayMenu();
-
             // Leitura do arquivo
-            if (arg1.find("--file=") == 0) {
-                matrizes.push_back(SparseMatrix());
-                readSparseMatrix(matrizes[0], arg1.substr(7));
-            } else if (arg1 == "-f" || arg1 == "--file") {
-                matrizes.push_back(SparseMatrix());
-                if (argc > 2)
-                    readSparseMatrix(matrizes[0], argv[2]);
-                else { throw runtime_error("Arquivo não fornecido."); }
+            if (arg1 == "-f" || arg1 == "--file") {
+                if (argc < 2) { throw runtime_error("Arquivo não fornecido."); }
+
+                for (uint i = 2; argv[i]; i++) {
+                    cout << i << " " << argv[i] << endl;
+                    matrizes.push_back(SparseMatrix());
+                    readSparseMatrix(matrizes.back(), argv[i]);
+                }
             }
         }
     } else
@@ -248,6 +249,15 @@ int main(int argc, char const *argv[]) {
             matrizes.push_back(SparseMatrix(m, n));
         }
 
+        // open <file>
+        else if (token == "open") {
+            string filename;
+            while (ss >> filename) {
+                matrizes.push_back(SparseMatrix());
+                readSparseMatrix(matrizes.back(), filename);
+            }
+        }
+
         // size
         else if (token == "size") {
             int i;
@@ -265,12 +275,11 @@ int main(int argc, char const *argv[]) {
         }
 
         // delete i
-        else if(token == "delete"){
+        else if (token == "delete") {
             int i;
             ss >> i;
-            matrizes.erase(matrizes.begin()+i);
-            cout << "Matriz do índice " << i << " deletada!"
-            << endl;
+            matrizes.erase(matrizes.begin() + i);
+            cout << "Matriz de índice " << i << " deletada!" << endl;
         }
 
         // get da célula i, j
@@ -283,12 +292,13 @@ int main(int argc, char const *argv[]) {
 
         // print matriz i
         else if (token == "print") {
-        int i;
-        ss >> i;
-        if (i >= 0 && i < static_cast<int>(matrizes.size())) {
+            int i;
+            ss >> i;
+            if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 matrizes[i].print();
             } else {
-            cout << "Nenhuma matriz encontrada no índice " << i << "!" << endl;
+                cout << "Nenhuma matriz encontrada no índice " << i << "!"
+                     << endl;
             }
         }
 

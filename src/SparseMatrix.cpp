@@ -156,8 +156,10 @@ void SparseMatrix::print() {
         Node* temp = aux->direito;
         buff << "[ ";
         for (int j = 1; j <= colunas; j++) {
-            if (temp->coluna == j) buff << temp->valor << ' ';
-            else buff << "0 ";
+            if (temp->coluna == j)
+                buff << temp->valor << ' ';
+            else
+                buff << "0 ";
 
             if (j == temp->coluna) temp = temp->direito;
         }

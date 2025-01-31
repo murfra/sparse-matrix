@@ -23,6 +23,9 @@ O trabalho foi desenvolvido como parte da avaliação da disciplina de **Estrutu
 ## 📂 **Estrutura do Projeto**  
 O projeto está organizado da seguinte forma:  
 
+# Estrutura do Projeto SparseMatrix
+
+```plaintext
 /SparseMatrix
 │
 ├── /include              # Arquivos de cabeçalho (headers)
@@ -37,7 +40,7 @@ O projeto está organizado da seguinte forma:
 │   ├── matrix3x3.txt     # Exemplo de matriz 3x3
 │   └── matrix4x4.txt     # Exemplo de matriz 4x4
 │
-├── clang-format.txt      # Configuração do formatação de código (clang-format)
+├── clang-format.txt      # Configuração de formatação de código (clang-format)
 ├── .gitignore            # Arquivo para ignorar arquivos no Git
 ├── LICENSE               # Licença do projeto
 ├── Makefile              # Arquivo Makefile para compilação automatizada

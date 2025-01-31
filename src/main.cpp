@@ -164,6 +164,8 @@ void comandos() {
          << "Exibe o tamanho da matriz de índice i\n"
          << setw(2) << "" << "[insert] <i> <m> <n> <v>" << setw(7) << ""
          << "Insere o valor v na célula (m, n) da matriz de índice i\n"
+         << setw(2) << "" << "[delete] <i> " << setw(18) << ""
+         << "Deleta o índice i no vetor de matrizes\n"
          << setw(2) << "" << "[get] <i> <m> <n>" << setw(14) << ""
          << "Obtém o valor na célula (m, n) da matriz de índice i\n"
          << setw(2) << "" << "[print] <i>" << setw(20) << ""
@@ -262,6 +264,15 @@ int main(int argc, char const *argv[]) {
             matrizes[i].insert(m, n, v);
         }
 
+        // delete i
+        else if(token == "delete"){
+            int i;
+            ss >> i;
+            matrizes.erase(matrizes.begin()+i);
+            cout << "Matriz do índice " << i << " deletada!"
+            << endl;
+        }
+
         // get da célula i, j
         else if (token == "get") {
             int i, m, n;
@@ -272,9 +283,13 @@ int main(int argc, char const *argv[]) {
 
         // print matriz i
         else if (token == "print") {
-            int i;
-            ss >> i;
-            matrizes[i].print();
+        int i;
+        ss >> i;
+        if (i >= 0 && i < static_cast<int>(matrizes.size())) {
+                matrizes[i].print();
+            } else {
+            cout << "Nenhuma matriz encontrada no índice " << i << "!" << endl;
+            }
         }
 
         // somar matrizes A e B

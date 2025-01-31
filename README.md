@@ -58,6 +58,6 @@ Este projeto foi desenvolvido por:
 Ambos os programadores participaram ativamente em todas as etapas do desenvolvimento deste trabalho, contribuindo de maneira equilibrada e colaborativa. Desde a implementação da estrutura de dados até a otimização das operações, ambos estiveram envolvidos na concepção e refinamento do código, garantindo eficiência e clareza na solução proposta. Além disso, participaram conjuntamente do planejamento, adaptação e organização do projeto, tomando decisões estratégicas para sua estruturação. No que diz respeito à documentação, ambos trabalharam na elaboração do relatório final, garantindo que a descrição do trabalho refletisse com precisão os processos e escolhas realizadas ao longo do desenvolvimento.
 
 
-##🙏 **Agradecimentos**
+## 🙏 **Agradecimentos**
 
 Gostaríamos de expressar nossa gratidão ao professor Atílio Gomes Luiz pela orientação e pelo apoio durante o desenvolvimento deste trabalho. Sua expertise e dedicação foram fundamentais para o sucesso do projeto.

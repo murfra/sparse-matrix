@@ -46,6 +46,7 @@ O projeto está organizado da seguinte forma:
 ├── Makefile              # Arquivo Makefile para compilação automatizada
 ├── Projeto01.pdf         # Relatório técnico do projeto
 └── README.md             # Este arquivo
+````
 
 👥 Equipe
 Este projeto foi desenvolvido por:

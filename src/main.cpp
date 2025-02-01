@@ -8,6 +8,7 @@
  * implementar matrizes esparsas.
  */
 
+#include <exception>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -38,7 +39,7 @@ void readSparseMatrix(SparseMatrix &m, string filename) {
     ifstream file(filename);
 
     if (!file.is_open()) {
-        throw runtime_error("Arquivo inválido ou não encontrado!");
+        throw runtime_error("Arquivo inválido ou não encontrado: " + filename);
     }
 
     int lin, col, i, j;
@@ -126,7 +127,7 @@ SparseMatrix *multiply(SparseMatrix &A, SparseMatrix &B) {
  */
 void displayMenu() {
     cout << "Olá, seja bem-vindo(a)!\n";
-    cout << "ATENÇÃO: Caso precise ver os comandos digite: ajuda\n";
+    cout << "ATENÇÃO: Caso precise ver a lista de comandos digite: help\n";
     cout << setfill('-') << setw(51) << "" << endl;
 }
 
@@ -143,7 +144,7 @@ void help() {
 
     cout << "\n" << setw(2) << "" << "-h, --help" << setw(20) << "";
     cout << "Mostra opções de ajuda\n";
-    cout << setw(2) << "" << "-f, --file <ARQUIVO>" << setw(10) << "";
+    cout << setw(2) << "" << "-f, --file <file> <...>" << setw(10) << "";
     cout << "Lê um ARQUIVO que especifica uma matriz" << endl;
 }
 
@@ -156,7 +157,7 @@ void help() {
  */
 void comandos() {
     cout << setfill(' ') << "\nComandos disponíveis:\n"
-         << setw(2) << "" << "[ajuda | help]" << setw(17) << ""
+         << setw(2) << "" << "[help]" << setw(17) << ""
          << "Exibe esta lista de comandos\n"
          << setw(2) << "" << "[create] <m> <n>" << setw(15) << ""
          << "Cria uma matriz esparsa com m linhas e n colunas\n"
@@ -246,7 +247,9 @@ int main(int argc, char const *argv[]) {
         else if (token == "create") {
             int m, n;
             ss >> m >> n;
-            matrizes.push_back(SparseMatrix(m, n));
+            try {
+                matrizes.push_back(SparseMatrix(m, n));
+            } catch (const exception &e) { cout << e.what() << endl; }
         }
 
         // open <file>
@@ -254,7 +257,12 @@ int main(int argc, char const *argv[]) {
             string filename;
             while (ss >> filename) {
                 matrizes.push_back(SparseMatrix());
-                readSparseMatrix(matrizes.back(), filename);
+                try {
+                    readSparseMatrix(matrizes.back(), filename);
+                } catch (const exception &e) {
+                    cout << e.what() << endl;
+                    matrizes.pop_back();
+                }
             }
         }
 
@@ -262,8 +270,12 @@ int main(int argc, char const *argv[]) {
         else if (token == "size") {
             int i;
             ss >> i;
-            cout << "Tamanho da matriz " << i << ": " << matrizes[i].size()
-                 << endl;
+            if (i >= 0 && i < static_cast<int>(matrizes.size())) {
+                cout << "Tamanho da matriz " << i << ": " << matrizes[i].size()
+                     << endl;
+            } else
+                cout << "Nenhuma matriz encontrada no índice " << i << "!"
+                     << endl;
         }
 
         // insert i, j, v(valor) l
@@ -271,15 +283,23 @@ int main(int argc, char const *argv[]) {
             int i, m, n;
             double v;
             ss >> i >> m >> n >> v;
-            matrizes[i].insert(m, n, v);
+            try {
+                if (i < 0 || i >= static_cast<int>(matrizes.size()))
+                    throw runtime_error("Nenhuma matriz encontrada no índice " +
+                                        to_string(i) + '!');
+                matrizes[i].insert(m, n, v);
+            } catch (const exception &e) { cout << e.what() << endl; }
         }
 
         // delete i
         else if (token == "delete") {
             int i;
             ss >> i;
-            matrizes.erase(matrizes.begin() + i);
-            cout << "Matriz de índice " << i << " deletada!" << endl;
+            if (i >= 0 && i < static_cast<int>(matrizes.size())) {
+                matrizes.erase(matrizes.begin() + i);
+                cout << "Matriz de índice " << i << " deletada!" << endl;
+            } else
+                cout << "Nenhuma matriz encontrada no índice " << i << "!";
         }
 
         // get da célula i, j
@@ -304,24 +324,40 @@ int main(int argc, char const *argv[]) {
 
         // somar matrizes A e B
         else if (token == "sum") {
-            int a, b;
+            int a = -1, b = -1;
             ss >> a >> b;
-            SparseMatrix *resultado = sum(matrizes[a], matrizes[b]);
-            if (resultado != nullptr) {
-                matrizes.push_back(*resultado);
-                delete resultado;
-            }
+
+            if (a >= 0 && b >= 0 && a < static_cast<int>(matrizes.size()) &&
+                b < static_cast<int>(matrizes.size())) {
+                SparseMatrix *resultado = sum(matrizes[a], matrizes[b]);
+                if (resultado != nullptr) {
+                    matrizes.push_back(*resultado);
+                    delete resultado;
+                }
+            } else if (a >= 0 && b >= 0) {
+                cout << "Nenhuma matriz encontrada no índice " << a
+                     << " ou no índice " << b << "!" << endl;
+            } else
+                cout << "Informe os indíces das matrizes 'a' e 'b'!" << endl;
         }
 
         // multiplicar matrizes A e B
         else if (token == "multiply") {
-            int a, b;
+            int a = -1, b = -1;
             ss >> a >> b;
-            SparseMatrix *resultado = multiply(matrizes[a], matrizes[b]);
-            if (resultado != nullptr) {
-                matrizes.push_back(*resultado);
-                delete resultado;
-            }
+
+            if (a >= 0 && b >= 0 && a < static_cast<int>(matrizes.size()) &&
+                b < static_cast<int>(matrizes.size())) {
+                SparseMatrix *resultado = multiply(matrizes[a], matrizes[b]);
+                if (resultado != nullptr) {
+                    matrizes.push_back(*resultado);
+                    delete resultado;
+                }
+            } else if (a >= 0 && b >= 0) {
+                cout << "Nenhuma matriz encontrada no índice " << a
+                     << " ou no índice " << b << "!" << endl;
+            } else
+                cout << "Informe os indíces das matrizes 'a' e 'b'!" << endl;
         }
 
         // exibir matrizes
@@ -334,7 +370,7 @@ int main(int argc, char const *argv[]) {
         }
 
         // comandos disponíveis
-        else if (token == "ajuda" || token == "help") {
+        else if (token == "help") {
             comandos();
         }
 

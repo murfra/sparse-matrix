@@ -100,7 +100,7 @@ class SparseMatrix {
      * @return Valor na posição (i, j) ou zero se a posição estiver vazia.
      * @throws std::out_of_range Se i ou j forem inválidos.
      */
-    double get(int i, int j);
+    double get(int i, int j) const;
 
     /**
      * @brief Retorna o número de linhas da matriz.
@@ -130,7 +130,7 @@ class SparseMatrix {
      * bidimensional. Valores não presentes na matriz esparsa são impressos como
      * zero.
      */
-    void print();
+    void print() const;
 
     /**
      * @brief Sobrecarga do operador de atribuição.

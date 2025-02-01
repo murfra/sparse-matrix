@@ -45,7 +45,7 @@ void SparseMatrix::clear() {
 }
 
 SparseMatrix::SparseMatrix(int m, int n) : linhas(m), colunas(n) {
-    if (m <= 0 || n <= 0) throw std::out_of_range("Invalid line or column");
+    if (m <= 0 || n <= 0) throw std::out_of_range("Linha ou coluna inválida!");
     initializeMatrix(m, n);
 }
 
@@ -72,7 +72,7 @@ SparseMatrix::~SparseMatrix() {
 
 void SparseMatrix::insert(int i, int j, double value) {
     if (i <= 0 || i > linhas || j <= 0 || j > colunas) {
-        throw std::out_of_range("Invalid line or column");
+        throw std::out_of_range("Linha ou coluna inválida!");
     }
 
     Node* aux = m_head->direito;
@@ -116,9 +116,9 @@ void SparseMatrix::insert(int i, int j, double value) {
     aux->direito = temp;
 }
 
-double SparseMatrix::get(int i, int j) {
+double SparseMatrix::get(int i, int j) const {
     if (i <= 0 || i > linhas || j <= 0 || j > colunas) {
-        throw std::out_of_range("Invalid line or column");
+        throw std::out_of_range("Linha ou coluna inválida!");
     }
 
     Node* aux_linha = m_head->abaixo;
@@ -148,7 +148,7 @@ int SparseMatrix::size() const {
     return linhas * colunas;
 }
 
-void SparseMatrix::print() {
+void SparseMatrix::print() const {
     Node* aux = m_head->abaixo;
     std::ostringstream buff;
 

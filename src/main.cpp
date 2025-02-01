@@ -8,6 +8,8 @@
  * implementar matrizes esparsas.
  */
 
+#include <sys/types.h>
+
 #include <exception>
 #include <fstream>
 #include <iomanip>
@@ -183,6 +185,9 @@ void comandos() {
          << "Sai do programa e libera a mémoria\n";
 }
 
+// adicionar a lógica de ler arquivo por arugmento aqui...
+void argsProcess(int argc, char *argv[]) {}
+
 /**
  * @brief Função principal do programa.
  *
@@ -194,11 +199,10 @@ void comandos() {
  * @param argv Vetor de argumentos da linha de comando.
  * @return 0 se o programa for executado com sucesso.
  */
-int main(int argc, char const *argv[]) {
-    // Configuração de caracteres especiais para Windows
+int main(int argc, char *argv[]) {
+// Configuração de caracteres especiais para Windows
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
-    std::cout << "Configurado para caracteres especiais e acentos. 😊" << endl;
 #endif
 
     vector<SparseMatrix> matrizes;
@@ -211,15 +215,23 @@ int main(int argc, char const *argv[]) {
             return 0;
         } else {
             displayMenu();
-            // Leitura do arquivo
+            // Leitura do arquivo (passado por argumento)
             if (arg1 == "-f" || arg1 == "--file") {
-                if (argc < 2) { throw runtime_error("Arquivo não fornecido."); }
-
-                for (uint i = 2; argv[i]; i++) {
-                    cout << i << " " << argv[i] << endl;
-                    matrizes.push_back(SparseMatrix());
-                    readSparseMatrix(matrizes.back(), argv[i]);
-                }
+                try {
+                    if (argc < 3) {
+                        throw runtime_error(
+                            "Arquivo não fornecido. Programa iniciado!");
+                    }
+                    for (uint i = 2; argv[i]; i++) {
+                        matrizes.push_back(SparseMatrix());
+                        try {
+                            readSparseMatrix(matrizes.back(), argv[i]);
+                        } catch (const exception &e) {
+                            cout << e.what() << endl;
+                            matrizes.pop_back();
+                        }
+                    }
+                } catch (const exception &e) { cout << e.what() << endl; }
             }
         }
     } else
@@ -299,15 +311,22 @@ int main(int argc, char const *argv[]) {
                 matrizes.erase(matrizes.begin() + i);
                 cout << "Matriz de índice " << i << " deletada!" << endl;
             } else
-                cout << "Nenhuma matriz encontrada no índice " << i << "!";
+                cout << "Nenhuma matriz encontrada no índice " << i << "!"
+                     << endl;
         }
 
         // get da célula i, j
         else if (token == "get") {
             int i, m, n;
             ss >> i >> m >> n;
-            cout << "Valor na célula (" << m << ", " << n
-                 << ") é: " << matrizes[i].get(m, n) << endl;
+            if (i >= 0 && i < static_cast<int>(matrizes.size())) {
+                try {
+                    cout << "Valor na célula (" << m << ", " << n
+                         << ") é: " << matrizes[i].get(m, n) << endl;
+                } catch (const exception &e) { cout << e.what() << endl; }
+            } else
+                cout << "Nenhuma matriz encontrada no índice " << i << "!"
+                     << endl;
         }
 
         // print matriz i
@@ -338,7 +357,7 @@ int main(int argc, char const *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << a
                      << " ou no índice " << b << "!" << endl;
             } else
-                cout << "Informe os indíces das matrizes 'a' e 'b'!" << endl;
+                cout << "Informe o indíce das matrizes corretamente!" << endl;
         }
 
         // multiplicar matrizes A e B
@@ -357,15 +376,15 @@ int main(int argc, char const *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << a
                      << " ou no índice " << b << "!" << endl;
             } else
-                cout << "Informe os indíces das matrizes 'a' e 'b'!" << endl;
+                cout << "Informe o indíce das matrizes corretamente!" << endl;
         }
 
         // exibir matrizes
         else if (token == "show") {
             auto index = 0;
             for (auto &matrix : matrizes) {
-                cout << "matriz[" << index++ << "] :" << endl;
-                matrix.print();
+                cout << "matriz[" << index++ << "]: " << matrix.getLines()
+                     << "x" << matrix.getCols() << endl;
             }
         }
 

@@ -8,8 +8,6 @@
  * implementar matrizes esparsas.
  */
 
-#include <sys/types.h>
-
 #include <exception>
 #include <fstream>
 #include <iomanip>
@@ -180,33 +178,33 @@ void comandos() {
          << setw(2) << "" << "[multiply] <a> <b>" << setw(13) << ""
          << "Multiplica as matrizes de índices a e b e armazena o resultado\n"
          << setw(2) << "" << "[show]" << setw(25) << ""
-         << "Exibe todas as matrizes armazenadas\n"
+         << "Exibe informações das matrizes armazenadas\n"
          << setw(2) << "" << "[exit]" << setw(25) << ""
          << "Sai do programa e libera a mémoria\n";
 }
 
-// adicionar a lógica de ler arquivo por arugmento aqui...
-void argsProcess(int argc, char *argv[]) {}
-
 /**
- * @brief Função principal do programa.
+ * @brief Processa os argumentos da linha de comando para carregar matrizes
+ * esparsas.
  *
- * Esta função gerencia a execução do programa, incluindo a leitura de
- * argumentos da linha de comando, a interação com o usuário e a execução
- * dos comandos.
+ * Esta função analisa os argumentos fornecidos na linha de comando. Se o
+ * primeiro argumento for "-h" ou "--help", a função exibe a ajuda e retorna 0.
+ * Se o primeiro argumento for "-f" ou "--file", a função tenta ler os arquivos
+ * de matriz esparsa fornecidos nos argumentos subsequentes. Caso contrário,
+ * exibe um menu padrão.
  *
  * @param argc Número de argumentos da linha de comando.
- * @param argv Vetor de argumentos da linha de comando.
- * @return 0 se o programa for executado com sucesso.
+ * @param argv Array de strings que contém os argumentos da linha de comando.
+ * @param matrizes Referência a um vetor de objetos SparseMatrix onde as
+ * matrizes lidas serão armazenadas.
+ *
+ * @return Retorna 0 se a ajuda foi exibida, 1 se a execução foi bem-sucedida e
+ * as matrizes foram processadas.
+ *
+ * @throws runtime_error Se o argumento "-f" ou "--file" for fornecido, mas
+ * nenhum arquivo for especificado.
  */
-int main(int argc, char *argv[]) {
-// Configuração de caracteres especiais para Windows
-#ifdef _WIN32
-    SetConsoleOutputCP(CP_UTF8);
-#endif
-
-    vector<SparseMatrix> matrizes;
-
+int argsProcessor(int argc, char *argv[], vector<SparseMatrix> &matrizes) {
     if (argc > 1) {
         string arg1 = argv[1];
 
@@ -215,7 +213,7 @@ int main(int argc, char *argv[]) {
             return 0;
         } else {
             displayMenu();
-            // Leitura do arquivo (passado por argumento)
+
             if (arg1 == "-f" || arg1 == "--file") {
                 try {
                     if (argc < 3) {
@@ -236,6 +234,28 @@ int main(int argc, char *argv[]) {
         }
     } else
         displayMenu();
+    return 1;
+}
+
+/**
+ * @brief Função principal do programa.
+ *
+ * Esta função gerencia a execução do programa, incluindo a leitura de
+ * argumentos da linha de comando, a interação com o usuário e a execução
+ * dos comandos.
+ *
+ * @param argc Número de argumentos da linha de comando.
+ * @param argv Vetor de argumentos da linha de comando.
+ * @return 0 se o programa for executado com sucesso.
+ */
+int main(int argc, char *argv[]) {
+// Configuração de caracteres especiais para Windows
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+#endif
+
+    vector<SparseMatrix> matrizes;
+    if (!argsProcessor(argc, argv, matrizes)) return 0;
 
     while (true) {
         cout << "> ";
@@ -245,7 +265,7 @@ int main(int argc, char *argv[]) {
         stringstream ss{comando};
         ss >> token;
 
-        cout << "$" << ss.str() << " ✅" << endl;
+        cout << "$ " << ss.str() << " ✅" << endl;
 
         // exit
         if (token == "exit") {
@@ -257,7 +277,7 @@ int main(int argc, char *argv[]) {
 
         // create m, n
         else if (token == "create") {
-            int m, n;
+            int m = 0, n = 0;
             ss >> m >> n;
             try {
                 matrizes.push_back(SparseMatrix(m, n));
@@ -266,7 +286,7 @@ int main(int argc, char *argv[]) {
 
         // open <file>
         else if (token == "open") {
-            string filename;
+            string filename = "";
             while (ss >> filename) {
                 matrizes.push_back(SparseMatrix());
                 try {
@@ -280,8 +300,9 @@ int main(int argc, char *argv[]) {
 
         // size
         else if (token == "size") {
-            int i;
+            int i = -1;
             ss >> i;
+
             if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 cout << "Tamanho da matriz " << i << ": " << matrizes[i].size()
                      << endl;
@@ -292,21 +313,25 @@ int main(int argc, char *argv[]) {
 
         // insert i, j, v(valor) l
         else if (token == "insert") {
-            int i, m, n;
-            double v;
+            int i = -1, m = 0, n = 0;
+            double v = 0;
             ss >> i >> m >> n >> v;
-            try {
-                if (i < 0 || i >= static_cast<int>(matrizes.size()))
-                    throw runtime_error("Nenhuma matriz encontrada no índice " +
-                                        to_string(i) + '!');
-                matrizes[i].insert(m, n, v);
-            } catch (const exception &e) { cout << e.what() << endl; }
+
+            if (i < 0 || i >= static_cast<int>(matrizes.size()))
+                cout << "Nenhuma matriz encontrada no índice " << i << '!'
+                     << endl;
+            else {
+                try {
+                    matrizes[i].insert(m, n, v);
+                } catch (const exception &e) { cout << e.what() << endl; }
+            }
         }
 
         // delete i
         else if (token == "delete") {
-            int i;
+            int i = -1;
             ss >> i;
+
             if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 matrizes.erase(matrizes.begin() + i);
                 cout << "Matriz de índice " << i << " deletada!" << endl;
@@ -317,8 +342,9 @@ int main(int argc, char *argv[]) {
 
         // get da célula i, j
         else if (token == "get") {
-            int i, m, n;
+            int i = -1, m = 0, n = 0;
             ss >> i >> m >> n;
+
             if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 try {
                     cout << "Valor na célula (" << m << ", " << n
@@ -331,8 +357,9 @@ int main(int argc, char *argv[]) {
 
         // print matriz i
         else if (token == "print") {
-            int i;
+            int i = -1;
             ss >> i;
+
             if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 matrizes[i].print();
             } else {
@@ -381,7 +408,7 @@ int main(int argc, char *argv[]) {
 
         // exibir matrizes
         else if (token == "show") {
-            auto index = 0;
+            int index = 0;
             for (auto &matrix : matrizes) {
                 cout << "matriz[" << index++ << "]: " << matrix.getLines()
                      << "x" << matrix.getCols() << endl;

@@ -4,10 +4,10 @@
 #include <sstream>
 #include <stdexcept>
 
-void SparseMatrix::initializeMatrix(int m, int n) {
-    for (int i = m + n; i >= 1; i--) {
-        if (i > n) {
-            Node* aux = new Node(0, i - n);
+void SparseMatrix::initializeMatrix() {
+    for (int i = linhas + colunas; i >= 1; i--) {
+        if (i > colunas) {
+            Node* aux = new Node(0, i - colunas);
             aux->direito = m_head->direito;
             m_head->direito = aux;
         } else {
@@ -46,13 +46,13 @@ void SparseMatrix::clear() {
 
 SparseMatrix::SparseMatrix(int m, int n) : linhas(m), colunas(n) {
     if (m <= 0 || n <= 0) throw std::out_of_range("Linha ou coluna inválida!");
-    initializeMatrix(m, n);
+    initializeMatrix();
 }
 
 SparseMatrix::SparseMatrix(const SparseMatrix& matrix)
     : linhas(matrix.linhas), colunas(matrix.colunas) {
     if (this != &matrix) {
-        initializeMatrix(linhas, colunas);
+        initializeMatrix();
         Node* auxL = matrix.m_head->abaixo;
         while (auxL != matrix.m_head) {
             Node* auxC = auxL->direito;
@@ -175,7 +175,7 @@ SparseMatrix& SparseMatrix::operator=(const SparseMatrix& matrix) {
         clear();
         linhas = matrix.linhas;
         colunas = matrix.colunas;
-        initializeMatrix(linhas, colunas);
+        initializeMatrix();
 
         Node* auxL = matrix.m_head->abaixo;
         while (auxL != matrix.m_head) {

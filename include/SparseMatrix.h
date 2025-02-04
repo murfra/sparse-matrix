@@ -22,11 +22,8 @@ class SparseMatrix {
      * Esta função cria nós sentinelas para cada linha e coluna da matriz,
      * conectando-os de forma circular. Os nós sentinelas serão usados para
      * facilitar a navegação e inserção de elementos na matriz esparsa.
-     *
-     * @param m Número de linhas da matriz.
-     * @param n Número de colunas da matriz.
      */
-    void initializeMatrix(int m, int n);
+    void initializeMatrix();
 
     /**
      * @brief Limpa a matriz, liberando a memória de todos os nós.

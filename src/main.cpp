@@ -49,7 +49,11 @@ void readSparseMatrix(SparseMatrix &m, string filename) {
 
     m = SparseMatrix(lin, col);
 
-    while (file >> i >> j >> v) m.insert(i, j, v);
+    while (file >> i >> j >> v) {
+        try {
+            m.insert(i, j, v);
+        } catch (const exception &e) { cout << e.what() << endl; }
+    }
 
     cout << "Arquivo carregado!" << endl;
 }
@@ -63,23 +67,23 @@ void readSparseMatrix(SparseMatrix &m, string filename) {
  * @param A Primeira matriz.
  * @param B Segunda matriz.
  * @return Ponteiro para a matriz resultante.
+ * @throws std::out_of_range Se as matrizes tiverem dimensões distintas.
  */
 SparseMatrix *sum(SparseMatrix &A, SparseMatrix &B) {
-    if (A.getCols() == B.getCols() && A.getLines() == B.getLines()) {
-        SparseMatrix *C = new SparseMatrix(A.getLines(), A.getCols());
-
-        for (int i = 1; i <= C->getLines(); i++) {
-            for (int j = 1; j <= C->getCols(); j++) {
-                C->insert(i, j, (A.get(i, j) + B.get(i, j)));
-            }
-        }
-
-        return C;
-    } else {
-        cout << "Não é possível somar matrizes de dimensões distintas ;("
-             << "Só é possível caso seja 2x2, 3x3 e por assim vai..." << endl;
-        return new SparseMatrix();
+    if (A.getCols() != B.getCols() || A.getLines() != B.getLines()) {
+        throw out_of_range(
+            "Não é possível somar matrizes de dimensões distintas ;(");
     }
+
+    SparseMatrix *C = new SparseMatrix(A.getLines(), A.getCols());
+
+    for (int i = 1; i <= C->getLines(); i++) {
+        for (int j = 1; j <= C->getCols(); j++) {
+            C->insert(i, j, (A.get(i, j) + B.get(i, j)));
+        }
+    }
+
+    return C;
 }
 
 /**
@@ -92,14 +96,14 @@ SparseMatrix *sum(SparseMatrix &A, SparseMatrix &B) {
  * @param A Primeira matriz.
  * @param B Segunda matriz.
  * @return Ponteiro para a matriz resultante.
+ * @throws std::out_of_range Se o número de colunas da matriz A for
+ * diferente do número de linhas da matriz B.
  */
 SparseMatrix *multiply(SparseMatrix &A, SparseMatrix &B) {
     if (A.getCols() != B.getLines()) {
-        cout << "Não é possível multiplicar as matrizes ;("
-             << "O número de colunas da matriz A deve ser igual ao número de "
-                "linhas da matriz B."
-             << endl;
-        return nullptr;
+        throw out_of_range(
+            "O número de colunas da matriz A deve ser igual ao número de "
+            "linhas da matriz B.");
     }
 
     SparseMatrix *C = new SparseMatrix(A.getLines(), B.getCols());
@@ -306,24 +310,29 @@ int main(int argc, char *argv[]) {
             if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 cout << "Tamanho da matriz " << i << ": " << matrizes[i].size()
                      << endl;
-            } else
-                cout << "Nenhuma matriz encontrada no índice " << i << "!"
+            } else if (i >= 0) {
+                cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
+            } else {
+                cout << "Informe o indíce da matriz corretamente!" << endl;
+            }
         }
 
-        // insert i, j, v(valor) l
+        // insert i, m, n, v
         else if (token == "insert") {
             int i = -1, m = 0, n = 0;
             double v = 0;
             ss >> i >> m >> n >> v;
 
-            if (i < 0 || i >= static_cast<int>(matrizes.size()))
-                cout << "Nenhuma matriz encontrada no índice " << i << '!'
-                     << endl;
-            else {
+            if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 try {
                     matrizes[i].insert(m, n, v);
                 } catch (const exception &e) { cout << e.what() << endl; }
+            } else if (i >= 0) {
+                cout << "Nenhuma matriz encontrada no índice " << i << '!'
+                     << endl;
+            } else {
+                cout << "Informe o indíce da matriz corretamente!" << endl;
             }
         }
 
@@ -335,9 +344,12 @@ int main(int argc, char *argv[]) {
             if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 matrizes.erase(matrizes.begin() + i);
                 cout << "Matriz de índice " << i << " deletada!" << endl;
-            } else
-                cout << "Nenhuma matriz encontrada no índice " << i << "!"
+            } else if (i >= 0)
+                cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
+            else {
+                cout << "Informe o indíce das matriz corretamente!" << endl;
+            }
         }
 
         // get da célula i, j
@@ -350,9 +362,11 @@ int main(int argc, char *argv[]) {
                     cout << "Valor na célula (" << m << ", " << n
                          << ") é: " << matrizes[i].get(m, n) << endl;
                 } catch (const exception &e) { cout << e.what() << endl; }
-            } else
-                cout << "Nenhuma matriz encontrada no índice " << i << "!"
+            } else if (i >= 0) {
+                cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
+            } else
+                cout << "Informe o indíce das matriz corretamente!" << endl;
         }
 
         // print matriz i
@@ -362,9 +376,11 @@ int main(int argc, char *argv[]) {
 
             if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 matrizes[i].print();
-            } else {
-                cout << "Nenhuma matriz encontrada no índice " << i << "!"
+            } else if (i >= 0) {
+                cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
+            } else {
+                cout << "Informe o indíce das matriz corretamente!" << endl;
             }
         }
 
@@ -375,11 +391,11 @@ int main(int argc, char *argv[]) {
 
             if (a >= 0 && b >= 0 && a < static_cast<int>(matrizes.size()) &&
                 b < static_cast<int>(matrizes.size())) {
-                SparseMatrix *resultado = sum(matrizes[a], matrizes[b]);
-                if (resultado != nullptr) {
+                try {
+                    SparseMatrix *resultado = sum(matrizes[a], matrizes[b]);
                     matrizes.push_back(*resultado);
                     delete resultado;
-                }
+                } catch (const exception &e) { cout << e.what() << endl; }
             } else if (a >= 0 && b >= 0) {
                 cout << "Nenhuma matriz encontrada no índice " << a
                      << " ou no índice " << b << "!" << endl;
@@ -394,11 +410,12 @@ int main(int argc, char *argv[]) {
 
             if (a >= 0 && b >= 0 && a < static_cast<int>(matrizes.size()) &&
                 b < static_cast<int>(matrizes.size())) {
-                SparseMatrix *resultado = multiply(matrizes[a], matrizes[b]);
-                if (resultado != nullptr) {
+                try {
+                    SparseMatrix *resultado =
+                        multiply(matrizes[a], matrizes[b]);
                     matrizes.push_back(*resultado);
                     delete resultado;
-                }
+                } catch (const exception &e) { cout << e.what() << endl; }
             } else if (a >= 0 && b >= 0) {
                 cout << "Nenhuma matriz encontrada no índice " << a
                      << " ou no índice " << b << "!" << endl;

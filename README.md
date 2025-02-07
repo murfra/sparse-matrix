@@ -28,24 +28,26 @@ O projeto está organizado da seguinte forma:
 ```plaintext
 /SparseMatrix
 │
-├── /include              # Arquivos de cabeçalho (headers)
-│   ├── Node.h            # Definição da classe Node (nó da matriz)
-│   └── SparseMatrix.h    # Definição da classe SparseMatrix (matriz esparsa)
+├── /include               # Arquivos de cabeçalho (headers)
+│   ├── Node.h             # Definição da classe Node (nó da matriz)
+│   └── SparseMatrix.h     # Definição da classe SparseMatrix (matriz esparsa)
 │
-├── /src                  # Código-fonte da implementação em C++
-│   ├── main.cpp          # Exemplo de uso e testes
-│   └── SparseMatrix.cpp  # Implementação da classe SparseMatrix
+├── /src                   # Código-fonte da implementação em C++
+│   ├── main.cpp           # Exemplo de uso e testes
+│   └── SparseMatrix.cpp   # Implementação da classe SparseMatrix
 │
-├── /tests                # Arquivos de teste para a matriz esparsa
-│   ├── matrix4x4.txt     # Exemplo de matriz 4x4
-│   └── matrix50x50.txt   # Exemplo de matriz 50x50
+├── /tests                 # Arquivos de teste para a matriz esparsa
+│   ├── matrix4x4.txt      # Exemplo de matriz 4x4
+│   ├── matrix10x10.txt    # Exemplo de matriz 10x10
+│   ├── matrix50x50.txt    # Exemplo de matriz 50x50
+│   └── matrix100x100.txt  # Exemplo de matriz 100x100
 │
-├── clang-format.txt      # Configuração de formatação de código (clang-format)
-├── .gitignore            # Arquivo para ignorar arquivos no Git
-├── LICENSE               # Licença do projeto
-├── Makefile              # Arquivo Makefile para compilação automatizada
-├── Projeto01.pdf         # Relatório técnico do projeto
-└── README.md             # Este arquivo
+├── .clang-format          # Configuração de formatação de código (clang-format)
+├── .gitignore             # Arquivo para ignorar arquivos no Git
+├── LICENSE                # Licença do projeto
+├── Makefile               # Arquivo Makefile para compilação automatizada
+├── Projeto01.pdf          # Relatório técnico do projeto
+└── README.md              # Este arquivo
 ````
 
 ## 👥 **Equipe**

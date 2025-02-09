@@ -224,7 +224,7 @@ int argsProcessor(int argc, char *argv[], vector<SparseMatrix> &matrizes) {
                         throw runtime_error(
                             "Arquivo não fornecido. Programa iniciado!");
                     }
-                    for (uint i = 2; argv[i]; i++) {
+                    for (unsigned int i = 2; argv[i]; i++) {
                         matrizes.push_back(SparseMatrix());
                         try {
                             readSparseMatrix(matrizes.back(), argv[i]);

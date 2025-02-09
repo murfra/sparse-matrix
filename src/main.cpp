@@ -348,7 +348,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
             else {
-                cout << "Informe o índice das matriz corretamente!" << endl;
+                cout << "Informe o índice da matriz corretamente!" << endl;
             }
         }
 
@@ -366,7 +366,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
             } else
-                cout << "Informe o índice das matriz corretamente!" << endl;
+                cout << "Informe o índice da matriz corretamente!" << endl;
         }
 
         // print matriz i
@@ -380,7 +380,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
             } else {
-                cout << "Informe o índice das matriz corretamente!" << endl;
+                cout << "Informe o índice da matriz corretamente!" << endl;
             }
         }
 

@@ -359,8 +359,9 @@ int main(int argc, char *argv[]) {
 
             if (i >= 0 && i < static_cast<int>(matrizes.size())) {
                 try {
+                    auto v = matrizes[i].get(m, n);
                     cout << "Valor na célula (" << m << ", " << n
-                         << ") é: " << matrizes[i].get(m, n) << endl;
+                         << ") é: " << v << endl;
                 } catch (const exception &e) { cout << e.what() << endl; }
             } else if (i >= 0) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'

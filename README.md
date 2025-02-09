@@ -46,7 +46,7 @@ O projeto está organizado da seguinte forma:
 ├── .gitignore             # Arquivo para ignorar arquivos no Git
 ├── LICENSE                # Licença do projeto
 ├── Makefile               # Arquivo Makefile para compilação automatizada
-├── Relatório.pdf          # Relatório técnico do projeto
+├── Relatório.pdf          # Relatório final do projeto
 └── README.md              # Este arquivo
 ````
 

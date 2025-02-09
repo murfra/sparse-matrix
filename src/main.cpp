@@ -314,7 +314,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
             } else {
-                cout << "Informe o indíce da matriz corretamente!" << endl;
+                cout << "Informe o índice da matriz corretamente!" << endl;
             }
         }
 
@@ -332,7 +332,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
             } else {
-                cout << "Informe o indíce da matriz corretamente!" << endl;
+                cout << "Informe o índice da matriz corretamente!" << endl;
             }
         }
 
@@ -348,7 +348,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
             else {
-                cout << "Informe o indíce das matriz corretamente!" << endl;
+                cout << "Informe o índice das matriz corretamente!" << endl;
             }
         }
 
@@ -366,7 +366,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
             } else
-                cout << "Informe o indíce das matriz corretamente!" << endl;
+                cout << "Informe o índice das matriz corretamente!" << endl;
         }
 
         // print matriz i
@@ -380,7 +380,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << i << '!'
                      << endl;
             } else {
-                cout << "Informe o indíce das matriz corretamente!" << endl;
+                cout << "Informe o índice das matriz corretamente!" << endl;
             }
         }
 
@@ -400,7 +400,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << a
                      << " ou no índice " << b << "!" << endl;
             } else
-                cout << "Informe o indíce das matrizes corretamente!" << endl;
+                cout << "Informe o índice das matrizes corretamente!" << endl;
         }
 
         // multiplicar matrizes A e B
@@ -420,7 +420,7 @@ int main(int argc, char *argv[]) {
                 cout << "Nenhuma matriz encontrada no índice " << a
                      << " ou no índice " << b << "!" << endl;
             } else
-                cout << "Informe o indíce das matrizes corretamente!" << endl;
+                cout << "Informe o índice das matrizes corretamente!" << endl;
         }
 
         // exibir matrizes
